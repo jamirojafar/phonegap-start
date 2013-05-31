@@ -3,10 +3,10 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.phonegap.hello-world"
         version   = "2.2.0">
-    <name>Hello World</name>
+    <name>Simple Game</name>
 
     <description>
-       Eerste echte app met phonegap
+       Simple Game
     </description>
 
     <author href="http://saebu.nl" email="abu.saebu@gmail.com">
