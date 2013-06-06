@@ -18,6 +18,7 @@
  */
 var app = {
     initialize: function() {
+		console.log('geinitialiseerd');
         this.bind();
     },
 	leftCount: 0,
