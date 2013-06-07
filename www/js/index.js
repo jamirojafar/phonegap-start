@@ -44,8 +44,11 @@ var app = {
         completeElem.className = completeElem.className.split('hide').join('');
     },
 	startGame: function() {
+		alert('game started');
+
 		$('.vlak')bind('click', function() {
-				console.log('bla');
+			alert('vlak geklikt');
+			console.log('bla');
 		});
 	}
 };
