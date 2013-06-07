@@ -44,7 +44,7 @@ var app = {
         completeElem.className = completeElem.className.split('hide').join('');
     },
 	startGame: function() {
-		alert('game started');
+		//alert('game started');
 
 		$('.vlak')bind('click', function() {
 			alert('vlak geklikt');
