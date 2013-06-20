@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
+	var app = {
     initialize: function() {
 		console.log('geinitialiseerd');
-        this.bind();
+		this.bind();
     },
 	leftCount: 0,
 	rightCount: 0,
@@ -44,11 +44,8 @@ var app = {
         completeElem.className = completeElem.className.split('hide').join('');
     },
 	startGame: function() {
-		//alert('game started');
-
-		$('.vlak')bind('click', function() {
-			alert('vlak geklikt');
-			console.log('bla');
-		});
+		console.log('game started');
+		alert('vlak geklikt');
 	}
 };
+

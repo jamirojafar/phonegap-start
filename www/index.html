@@ -19,6 +19,7 @@
 -->
 <html>
     <head>
+		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
@@ -29,10 +30,17 @@
 				height: 800px;
 				width: 49%;
 				border: 1px solid black;
-				background: blue;
 				color: #000;
 				font-size: 48px;
 				float: left;
+			}
+			.vlak1 {
+				background: green;
+				cplor: red;
+			}
+			.vlak2 {
+				background: blue;
+				color: #fff;
 			}
 			#deviceready {
 				width: 100%;
@@ -43,12 +51,11 @@
         <div class="app">
             <h1>Simple Game</h1>
             <div id="deviceready">
-					<div id="vlak1" class="vlak">1</div>
-					<div id="vlak2" class="vlak">2</div>
+					<div id="vlak1" class="vlak vlak1">1</div>
+					<div id="vlak2" class="vlak vlak2">2</div>
 			</div>
         </div>
-       <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-	   <script type="text/javascript" src="phonegap.js"></script> 
+ 	   <script type="text/javascript" src="phonegap.js"></script> 
        <script type="text/javascript" src="js/index.js"></script>
 		
         <script type="text/javascript">
