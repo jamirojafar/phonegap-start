@@ -1,65 +1,227 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-		<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no" />
+<head>
+<meta charset="UTF-8">
+       <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Simple Game</title>
-		<style>
-			.vlak {
-				height: 800px;
-				width: 49%;
-				border: 1px solid black;
-				color: #000;
-				font-size: 48px;
-				float: left;
-			}
-			.vlak1 {
-				background: green;
-				cplor: red;
-			}
-			.vlak2 {
-				background: blue;
-				color: #fff;
-			}
-			#deviceready {
-				width: 100%;
-			}
-		</style>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Simple Game</h1>
-            <div id="deviceready">
-					<div id="vlak1" class="vlak vlak1">1</div>
-					<div id="vlak2" class="vlak vlak2">2</div>
-			</div>
-        </div>
- 	   <script type="text/javascript" src="phonegap.js"></script> 
-       <script type="text/javascript" src="js/index.js"></script>
+<title>Hangman</title>
+<style>
+        #myCanvas {
+                padding: 0;
+                width: 300px;
+                height: 300px;
+                background: green;
+        }
+        .raadme {
+                font-size: 80%;
+                letter-spacing: 0.1em;
+                line-height: 1.5em;
+                background: white;
+                color: #000;
+                margin-left: 0.1em;
+        }
+        .ix {
+                position: relative;
+                top: 1.5em;
+                left: -.2em;
+                color: white;
+        }
+        button
+        {
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 15px;
+        margin: 20px auto;
+        color: #ccc;
+        background-color: #555;
+        background: -webkit-linear-gradient(#888, #555);
+        background: linear-gradient(#888, #555);
+        border: 0 none;
+        border-radius: 3px;
+        text-shadow: 0 -1px 0 #000;
+        box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
+        cursor: pointer;
+        -webkit-transition: all 150ms ease;
+        transition: all 150ms ease;
+        }
+
+button:hover, button:focus
+        {
+        -webkit-animation: pulsate 1.2s linear infinite;
+        animation: pulsate 1.2s linear infinite;
+        }
+        
+@-webkit-keyframes pulsate
+        {
+        0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        50%  { color: #fff; text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff; }
+        100% { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        }
+                
+@keyframes pulsate
+        {
+        0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        50%  { color: #fff; text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff; }
+        100% { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        }
+
+button:active
+        {
+        color: #fff;
+        text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff;
+        box-shadow: 0 1px 0 #666, 0 2px 0 #444, 0 2px 2px rgba(0,0,0,0.9);
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+        -webkit-animation: none;
+        animation: none;
+        }
+        
+button.letter {
+        font-size: 80%;
+        font-weight: normal;
+        text-transform: lowercase;
+        float: left;
+        margin-left: 0.2em;
+}
+</style>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script> 
+<script type="text/javascript" src="phonegap.js"></script> 
+<script type="text/javascript" src="js/galgje.js"></script>
+
+<script>
+app.initialize();
+var stap = 0;
+        
+
+// 2 hoofdvariabelen voor het hele spel
+// var teRadenWoord is het woord dat geraden moet worden dus bijvoobeeld 'fietspomp'
+// var geradenWoord is het woord waarin de geraden letters staan: bijvoorbeeld '..e..po.p';
+var teRadenWoord = "";
+var geradenWoordNu = "";
+/* 
+* Deze functie wordt aangeroepen als je op start spel klikt
+* Geen parameters of return waarde
+*/
+function galgje() {
+        //alert('De functie galgje() wordt nu aangeroepen..');
+        geradenWoordNu = "";
+        teRadenWoord = kiesRandomWoord();
+        //alert( 'Een willekeurig woord is bijvoorbeeld ' + teRadenWoord );
+        //Ik zet ook het geradenWoordNu vol met evenveel vraagtekens als dat er karakters zijn
+		for (x=0 ; x < teRadenWoord.length; x++) {
+			geradenWoordNu = geradenWoordNu + '?';
+		}
+		//alert (geradenWoordNu);
+        printDeLegeVakjes();
+        printHetAlfabet();
+        initialiseerSpel();
+		stap = 0;
+}
+
+/*
+* Deze functie kiest voor jou een random/willekeurig woord uit de globale variabele woorden (zie galgje.js)
+* Geen parameters
+* @return een random woord 
+*/
+function kiesRandomWoord() {
+        var eengetal = Math.floor((Math.random()*woorden.length));
+        var randomWoord = woorden[eengetal];
 		
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+		
+        return randomWoord;
+}
+
+/*
+* functie om de legevakjes te printen voor het raden woord
+*/
+function printDeLegeVakjes() {
+        var vakjesHtml = '';
+        for (var i=0; i< teRadenWoord.length; i++) {
+                vakjesHtml += "<span class='raadme'>?<span class='ix'>" + i + "</span></span>";
+        }
+        $('#vakken').html(vakjesHtml);
+}
+/*
+* functie om de legevakjes te printen voor het raden woord
+*/
+function printDeStatus() {
+        var vakjesHtml = '';
+        for (var i=0; i< teRadenWoord.length; i++) {
+                vakjesHtml += "<span class='raadme'>"+ geradenWoordNu[i] + "<span class='ix'>" + i + "</span></span>";
+        }
+        $('#vakken').html(vakjesHtml);
+}
+
+/*
+* Deze functie print alle letters als buttons, onclick wordt de functie raadLetter aangeroepen
+* met de gekozen letter
+*/
+function printHetAlfabet() {
+        var alfabetHtml = '';
+        for (var i=0; i< 26; i++) {
+                alfabetHtml += "<button onclick=raadLetter('"+ String.fromCharCode(i + 97) +"') class='letter' >"+ String.fromCharCode(i + 97) + "</button>";
+        }
+        $('#alfabet').html(alfabetHtml);
+}
+
+/*
+* Vergelijken van de gekozen letter met alle letters uit het teRadenWoord
+* Voordat de eerste letter getypt is wordt geradenWoordNu gevuld met allemaal ? (vraagtekens)
+* Als de letter voorkomt dan die vervangen op de juiste positie in  geradenWoordNu
+* Als de letter niet voorkomt dan de volgende stap tekenen met de functie tekenGalgje() 
+*/
+function raadLetter(letter) {
+	//alert('Je denkt dat de letter '+ letter +' in het woord zit ?');
+	
+	var letterGevonden = false;
+	for ( x=0; x < teRadenWoord.length; x++ ) {
+		if (teRadenWoord[x] == letter)
+		{
+			geradenWoordNu = geradenWoordNu.substr(0,x)+letter+geradenWoordNu.substr(x+1);
+			letterGevonden = true;
+		}
+	}
+
+	if (letterGevonden == false) {
+		// teken de volgende stap 
+		tekenGalgje();
+		stap++;
+	}
+	else {
+		// print het geradenWoordNu met een eigen functie
+		// kopieer hiervoor printDeLegeVakjes naar een andere functie
+		printDeStatus();
+	}	
+
+	if (teRadenWoord == geradenWoordNu) {
+		alert('Gefeliciteerd. Je hebt het woord geraden!!');
+		if (confirm('Wil je nog een keer spelen ?')) {
+			galgje();
+		}
+	}
+}
+
+</script>
+</head>
+<body>
+<header>
+<ul><li>Start</li></ul>
+</header>
+<div class="wrapper">
+  <div class="header">
+  </div>
+  <div class="content">
+    <div class="main">
+      <h1>Galgje</h1>
+          <canvas id="myCanvas">
+          </canvas>
+          <p id="status"></p>
+          <p id="vakken"></p>
+                <p id="alfabet"></p>
+    </div>
+  </div>
+</div>
+</body>
 </html>
