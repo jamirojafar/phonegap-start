@@ -1,3 +1,91 @@
+		body {
+		    background: #16167f;
+			color: #fff;
+			font-family: Comic Sans, sans-serif;
+			font-size: 14px;
+		}
+		
+        #myCanvas {
+                padding: 0;
+                width: 80%;
+                height: 50%;
+                background: green;
+				margin: 0 auto;
+        }
+        .raadme {
+                font-size: 100%;
+                letter-spacing: 0.1em;
+                line-height: 1.5em;
+                background: white;
+                color: #000;
+                margin-left: 0.1em;
+        }
+        .ix {
+                position: relative;
+                top: 1.5em;
+                left: -.2em;
+                color: white;
+        }
+        button
+        {
+        display: block;
+        font-size: 1.1em;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 15px;
+        margin: 20px auto;
+        color: #ccc;
+        background-color: #555;
+        background: -webkit-linear-gradient(#888, #555);
+        background: linear-gradient(#888, #555);
+        border: 0 none;
+        border-radius: 3px;
+        text-shadow: 0 -1px 0 #000;
+        box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0,0,0,0.6);
+        cursor: pointer;
+        -webkit-transition: all 150ms ease;
+        transition: all 150ms ease;
+        }
+
+button:hover, button:focus
+        {
+        -webkit-animation: pulsate 1.2s linear infinite;
+        animation: pulsate 1.2s linear infinite;
+        }
+        
+@-webkit-keyframes pulsate
+        {
+        0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        50%  { color: #fff; text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff; }
+        100% { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        }
+                
+@keyframes pulsate
+        {
+        0%   { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        50%  { color: #fff; text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff; }
+        100% { color: #ddd; text-shadow: 0 -1px 0 #000; }
+        }
+
+button:active
+        {
+        color: #fff;
+        text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff;
+        box-shadow: 0 1px 0 #666, 0 2px 0 #444, 0 2px 2px rgba(0,0,0,0.9);
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+        -webkit-animation: none;
+        animation: none;
+        }
+        
+button.letter {
+        font-size: 100%;
+        font-weight: normal;
+        text-transform: lowercase;
+        float: left;
+        margin-left: 0.2em;
+}
+
 .ui-header .ui-title,
 .ui-footer .ui-title,
 .ui-btn-inner *

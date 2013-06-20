@@ -16,6 +16,116 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+var stap = 0;
+        
+// 2 hoofdvariabelen voor het hele spel
+// var teRadenWoord is het woord dat geraden moet worden dus bijvoobeeld 'fietspomp'
+// var geradenWoord is het woord waarin de geraden letters staan: bijvoorbeeld '..e..po.p';
+var teRadenWoord = "";
+var geradenWoordNu = "";
+/* 
+* Deze functie wordt aangeroepen als je op start spel klikt
+* Geen parameters of return waarde
+*/
+function galgje() {
+        //alert('De functie galgje() wordt nu aangeroepen..');
+        geradenWoordNu = "";
+        teRadenWoord = kiesRandomWoord();
+        //alert( 'Een willekeurig woord is bijvoorbeeld ' + teRadenWoord );
+        //Ik zet ook het geradenWoordNu vol met evenveel vraagtekens als dat er karakters zijn
+		for (x=0 ; x < teRadenWoord.length; x++) {
+			geradenWoordNu = geradenWoordNu + '?';
+		}
+		//alert (geradenWoordNu);
+        printDeLegeVakjes();
+        printHetAlfabet();
+        initialiseerSpel();
+		stap = 0;
+}
+
+/*
+* Deze functie kiest voor jou een random/willekeurig woord uit de globale variabele woorden (zie galgje.js)
+* Geen parameters
+* @return een random woord 
+*/
+function kiesRandomWoord() {
+        var eengetal = Math.floor((Math.random()*woorden.length));
+        var randomWoord = woorden[eengetal];
+		
+		
+        return randomWoord;
+}
+
+/*
+* functie om de legevakjes te printen voor het raden woord
+*/
+function printDeLegeVakjes() {
+        var vakjesHtml = '';
+        for (var i=0; i< teRadenWoord.length; i++) {
+                vakjesHtml += "<span class='raadme'>?<span class='ix'>" + i + "</span></span>";
+        }
+        $('#vakken').html(vakjesHtml);
+}
+/*
+* functie om de legevakjes te printen voor het raden woord
+*/
+function printDeStatus() {
+        var vakjesHtml = '';
+        for (var i=0; i< teRadenWoord.length; i++) {
+                vakjesHtml += "<span class='raadme'>"+ geradenWoordNu[i] + "<span class='ix'>" + i + "</span></span>";
+        }
+        $('#vakken').html(vakjesHtml);
+}
+
+/*
+* Deze functie print alle letters als buttons, onclick wordt de functie raadLetter aangeroepen
+* met de gekozen letter
+*/
+function printHetAlfabet() {
+        var alfabetHtml = '';
+        for (var i=0; i< 26; i++) {
+                alfabetHtml += "<button onclick=raadLetter('"+ String.fromCharCode(i + 97) +"') class='letter' >"+ String.fromCharCode(i + 97) + "</button>";
+        }
+        $('#alfabet').html(alfabetHtml);
+}
+
+/*
+* Vergelijken van de gekozen letter met alle letters uit het teRadenWoord
+* Voordat de eerste letter getypt is wordt geradenWoordNu gevuld met allemaal ? (vraagtekens)
+* Als de letter voorkomt dan die vervangen op de juiste positie in  geradenWoordNu
+* Als de letter niet voorkomt dan de volgende stap tekenen met de functie tekenGalgje() 
+*/
+function raadLetter(letter) {
+	//alert('Je denkt dat de letter '+ letter +' in het woord zit ?');
+	
+	var letterGevonden = false;
+	for ( x=0; x < teRadenWoord.length; x++ ) {
+		if (teRadenWoord[x] == letter)
+		{
+			geradenWoordNu = geradenWoordNu.substr(0,x)+letter+geradenWoordNu.substr(x+1);
+			letterGevonden = true;
+		}
+	}
+
+	if (letterGevonden == false) {
+		// teken de volgende stap 
+		tekenGalgje();
+		stap++;
+	}
+	else {
+		// print het geradenWoordNu met een eigen functie
+		// kopieer hiervoor printDeLegeVakjes naar een andere functie
+		printDeStatus();
+	}	
+
+	if (teRadenWoord == geradenWoordNu) {
+		alert('Gefeliciteerd. Je hebt het woord geraden!!');
+		if (confirm('Wil je nog een keer spelen ?')) {
+			galgje();
+		}
+	}
+}
+
 	var app = {
     initialize: function() {
 		console.log('geinitialiseerd');
@@ -63,7 +173,7 @@ function initialiseerSpel() {
 function animatie() {	
 	if (stap < 12) {
 		tekenGalgje();
-		setTimeout(animatie,100);
+		setTimeout(animatie,1000);
 		stap++;
 	}
 	else {
